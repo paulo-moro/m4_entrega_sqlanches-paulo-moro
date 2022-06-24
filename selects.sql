@@ -17,21 +17,19 @@ WHERE
 -- 3)
 SELECT 
 	cli.nome gostam_de_fritas
-FROM produtos_pedidos
-	JOIN produtos prod ON prod.id = produto_id 
-	JOIN pedidos ped ON ped.id = pedido_id AND ped.status LIKE 'En%',
-    pedidos
-    JOIN clientes cli ON cli.id = cliente_id
+FROM produtos prod 
+  JOIN produtos_pedidos ON prod.id = produtos_pedidos.produto_id 
+  JOIN pedidos ped ON produtos_pedidos.pedido_id = ped.id 
+  JOIN clientes cli ON cli.id = ped.cliente_id
 WHERE
 	prod.nome ILIKE 'fritas';
 -- 4)
 SELECT 
 	ROUND(SUM(preco)::NUMERIC,2)    
-FROM produtos_pedidos
-	JOIN produtos prod ON prod.id = produto_id 
-	JOIN pedidos ped ON ped.id = pedido_id ,
-    pedidos
-    JOIN clientes cli ON cli.id = cliente_id
+FROM produtos prod 
+  JOIN produtos_pedidos ON prod.id = produtos_pedidos.produto_id 
+  JOIN pedidos ped ON produtos_pedidos.pedido_id = ped.id 
+  JOIN clientes cli ON cli.id = ped.cliente_id
 WHERE
 	cli.nome ILIKE 'Laura';
 -- 5)

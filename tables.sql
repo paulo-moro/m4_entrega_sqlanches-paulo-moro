@@ -17,19 +17,19 @@ CREATE TABLE IF NOT EXISTS Enderecos(
   bairro VARCHAR(50) NOT NULL,
   complemento VARCHAR(100),
   cliente_id INTEGER  NOT NULL UNIQUE ,
-  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
 -- Tabela pedidos
 CREATE TABLE IF NOT EXISTS Pedidos(
   id BIGSERIAL PRIMARY KEY,
   status VARCHAR(50) NOT NULL,
   cliente_id INTEGER NOT NULL,
-  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
 -- Tabela produtos
 CREATE TABLE IF NOT EXISTS Produtos(
   id BIGSERIAL PRIMARY KEY,
-  nome VARCHAR(30) UNIQUE NOT NULL,
+  nome VARCHAR(100) UNIQUE NOT NULL,
   tipo VARCHAR(30) NOT NULL,
   preco FLOAT NOT NULL,
   pts_de_lealdade INTEGER NOT NULL
@@ -39,6 +39,6 @@ CREATE TABLE IF NOT EXISTS Produtos_Pedidos(
 	id BIGSERIAL PRIMARY KEY,
   	pedido_id INTEGER NOT NULL,
   	produto_id INTEGER NOT NULL,
-  	FOREIGN KEY (pedido_id) REFERENCES Pedidos(id),
-  	FOREIGN KEY (produto_id) REFERENCES Produtos(id)
+  	FOREIGN KEY (pedido_id) REFERENCES Pedidos(id) ON DELETE CASCADE,
+  	FOREIGN KEY (produto_id) REFERENCES Produtos(id) ON DELETE CASCADE
 );

@@ -20,7 +20,7 @@ VALUES
 INSERT INTO produtos_pedidos
 	(pedido_id, produto_id)
 VALUES
-	(6,8),
+	  (6,8),
     (6,8),
     (6,1),
     (6,2);
@@ -42,12 +42,12 @@ SELECT
     prod.pts_de_lealdade
     
     
-FROM produtos_pedidos
-    JOIN produtos prod ON prod.id = produto_id
-	JOIN pedidos ped ON ped.id = pedido_id, clientes cli
+  FROM produtos prod 
+  JOIN produtos_pedidos ON prod.id = produtos_pedidos.produto_id 
+  JOIN pedidos ped ON produtos_pedidos.pedido_id = ped.id 
+  JOIN clientes cli ON cli.id = ped.cliente_id
 WHERE
-	cli.nome like 'Georgia'
-;
+	cli.nome like 'Georgia';
 
 
 -- Atualização
@@ -57,16 +57,15 @@ WHERE
 UPDATE 
 	clientes  
 SET
-	lealdade = sum
-FROM (
-SELECT SUM(prod.pts_de_lealdade)  as sum
-       FROM produtos_pedidos prod_ped
-       JOIN produtos prod ON prod.id = produto_id
-       JOIN pedidos ped ON ped.id = pedido_id, clientes cli
-
-WHERE 
-	cli.nome like 'Georgia') l
-WHERE clientes.nome like 'Georgia' returning *; 
+	lealdade = (SELECT SUM(prod.pts_de_lealdade) as sum  
+FROM produtos prod 
+JOIN produtos_pedidos ON prod.id = produtos_pedidos.produto_id 
+JOIN pedidos ped ON produtos_pedidos.pedido_id = ped.id 
+JOIN clientes ON clientes.id = ped.cliente_id
+WHERE
+	clientes.nome LIKE 'Georgia')
+ WHERE 
+ 	clientes.nome LIKE 'Georgia' RETURNING *;
 
 -- Deleção
 
